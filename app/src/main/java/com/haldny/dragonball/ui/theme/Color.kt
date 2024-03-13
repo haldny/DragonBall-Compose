@@ -1,4 +1,4 @@
-package com.haldnydragonball.ui.theme
+package com.haldny.dragonball.ui.theme
 
 import androidx.compose.ui.graphics.Color
 

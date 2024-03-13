@@ -1,4 +1,4 @@
-package com.haldnydragonball
+package com.haldny.dragonball
 
 import org.junit.Test
 

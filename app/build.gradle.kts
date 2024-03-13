@@ -5,11 +5,11 @@ plugins {
 }
 
 android {
-    namespace = "com.haldnydragonball"
+    namespace = "com.haldny.dragonball"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.haldnydragonball"
+        applicationId = "com.haldny.dragonball"
         minSdk = 24
         targetSdk = 34
         versionCode = 1
