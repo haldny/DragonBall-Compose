@@ -18,3 +18,8 @@ enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 rootProject.name = "DragonBall-Compose"
 include(":app")
+include(":core:network")
+include(":characters:view")
+include(":characters:domain")
+include(":characters:data")
+include(":core:business")
