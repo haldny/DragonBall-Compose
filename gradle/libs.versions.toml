@@ -8,6 +8,18 @@ espresso-core = "3.5.1"
 lifecycle-runtime-ktx = "2.7.0"
 activity-compose = "1.8.2"
 compose-bom = "2023.08.00"
+hilt = "2.50"
+ksp = "1.9.21-1.0.16"
+org-jetbrains-kotlin-jvm = "1.9.0"
+
+# Project
+target-sdk = "34"
+compile-sdk = "34"
+min-sdk = "24"
+androidx-compose-compiler = "1.5.1"
+version-code = "1"
+version-name = "1.0.0"
+application-id = "com.haldny.dragonball"
 
 [libraries]
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
@@ -24,8 +36,24 @@ ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview
 ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 material3 = { group = "androidx.compose.material3", name = "material3" }
+hilt = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
+hilt-compiler = { group = "com.google.dagger", name = "hilt-compiler", version.ref = "hilt" }
+hilt-testing = { group = "com.google.dagger", name = "hilt-android-testing", version.ref = "hilt" }
+
+build-gradle-plugin = { group = "com.android.tools.build", name = "gradle", version.ref = "agp" }
+kotlin-gradle-plugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
 
 [plugins]
-androidApplication = { id = "com.android.application", version.ref = "agp" }
-kotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+android-application = { id = "com.android.application", version.ref = "agp" }
+android-library = { id = "com.android.library", version.ref = "agp" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+org-jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "org-jetbrains-kotlin-jvm" }
 
+# Plugins defined by this project
+internal-plugin-application = { id = "internal.plugin.application", version = "unspecified" }
+internal-plugin-hilt = { id = "internal.plugin.hilt", version = "unspecified"}
+internal-plugin-library-compose = { id = "internal.plugin.library.compose", version = "unspecified"}
+internal-plugin-library = { id = "internal.plugin.library", version = "unspecified"}
+internal-plugin-kotlin = { id = "internal.plugin.kotlin", version = "unspecified"}
