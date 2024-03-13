@@ -8,6 +8,7 @@ android {
 }
 
 dependencies {
+    implementation(project(":core:design"))
     implementation(project(":characters:view"))
     implementation(libs.core.ktx)
     implementation(libs.lifecycle.runtime.ktx)

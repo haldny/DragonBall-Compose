@@ -1,4 +1,4 @@
-package com.haldny.dragonball.characters.view
+package com.haldny.dragonball.design
 
 import org.junit.Test
 

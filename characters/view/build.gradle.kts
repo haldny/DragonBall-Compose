@@ -10,6 +10,7 @@ android {
 
 dependencies {
     implementation(project(":core:business"))
+    implementation(project(":core:design"))
     implementation(project(":characters:data"))
     implementation(project(":characters:domain"))
     implementation(libs.activity.compose)
@@ -26,6 +27,11 @@ dependencies {
     implementation(libs.lifecycle.runtime.compose)
     implementation(libs.coil.compose)
     testImplementation(libs.junit)
+    testImplementation(libs.mockk)
+    testImplementation(libs.turbine)
+    testImplementation(libs.androidx.junit)
+    testImplementation(libs.androidx.core.testing)
+    testImplementation(libs.kotlinx.coroutines.test)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.espresso.core)
 }

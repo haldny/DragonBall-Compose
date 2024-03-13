@@ -1,4 +1,4 @@
-package com.haldny.dragonball.ui.theme
+package com.haldny.dragonball.design.theme
 
 import android.app.Activity
 import android.os.Build
