@@ -9,7 +9,7 @@ DragonBall-Compose is a sample Android application built with Jetpack Compose, s
 
 ## Screenshots
 
-<img src="screenshots/first_screen.png.png" width="200">
+<img src="screenshots/first_screen.png" width="200">
 <img src="screenshots/second_screen.png" width="200">
 <img src="screenshots/third_screen.png" width="200">
 <img src="screenshots/fourth_screen.png" width="200">
