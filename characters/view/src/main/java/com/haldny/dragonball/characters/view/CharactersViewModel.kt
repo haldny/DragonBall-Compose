@@ -35,7 +35,6 @@ class CharactersViewModel @Inject constructor(
                 setState(UiState.Error)
             }
         )
-
     }
 
     private fun handleResult(result: BusinessResult<List<DragonBallCharacter>>) {
@@ -49,7 +48,6 @@ class CharactersViewModel @Inject constructor(
                 }
             }
         }
-
     }
 
     private fun setState(updatedObject: UiState) {

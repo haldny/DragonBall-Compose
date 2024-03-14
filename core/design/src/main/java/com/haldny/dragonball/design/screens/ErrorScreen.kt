@@ -12,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.haldny.dragonball.design.R
@@ -30,7 +31,10 @@ fun ErrorScreen(
     ) {
         val context = LocalContext.current
 
-        Text(text = context.getString(R.string.error_message_text))
+        Text(
+            text = context.getString(R.string.error_message_text),
+            textAlign = TextAlign.Center
+        )
 
         Spacer(modifier = Modifier.height(16.dp))
 

@@ -29,7 +29,7 @@ class CharactersViewModelTest {
     private val repository = mockk<CharactersRepository>(relaxed = true)
 
     @Test
-    fun `Test success flow when receive a list of dragon ball characters`() = runTest {
+    fun `Test success flow when receive a dragon ball character`() = runTest {
         // GIVEN
         coEvery { repository.getCharacters() } answers {
             BusinessResult.Success(data = listOf(character1, character2))

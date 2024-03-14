@@ -5,15 +5,14 @@ plugins {
 }
 
 android {
-    namespace = "com.haldny.dragonball.characters.view"
+    namespace = "com.haldny.dragonball.character.detail.view"
 }
 
 dependencies {
     implementation(project(":core:business"))
     implementation(project(":core:design"))
-    implementation(project(":core:navigation"))
-    implementation(project(":characters:data"))
-    implementation(project(":characters:domain"))
+    implementation(project(":character-detail:data"))
+    implementation(project(":character-detail:domain"))
     implementation(libs.activity.compose)
     implementation(libs.ui)
     implementation(libs.ui.graphics)

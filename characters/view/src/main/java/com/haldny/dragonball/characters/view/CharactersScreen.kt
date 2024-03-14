@@ -25,10 +25,9 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import com.haldny.dragonball.characters.domain.DragonBallCharacter
+import com.haldny.dragonball.core.navigation.openCharacterDetails
 import com.haldny.dragonball.design.screens.ErrorScreen
 import com.haldny.dragonball.design.screens.LoadingScreen
-
-const val CHARACTERS_SCREEN_ROUTE = "characters-screen"
 
 @Composable
 fun CharactersScreen(
@@ -42,7 +41,7 @@ fun CharactersScreen(
         UiState.Error, UiState.Empty -> ErrorScreen(modifier = modifier) { viewModel.loadCharacters() }
         is UiState.Loaded -> {
             ListCharactersScreen(modifier = modifier, state.value as UiState.Loaded) {
-                //TODO: Navigate to details
+                navController.openCharacterDetails(it)
             }
         }
     }

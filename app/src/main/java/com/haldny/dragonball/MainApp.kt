@@ -11,8 +11,10 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.haldny.dragonball.characters.view.CHARACTERS_SCREEN_ROUTE
+import com.haldny.dragonball.character.detail.view.CharacterDetailScreen
 import com.haldny.dragonball.characters.view.CharactersScreen
+import com.haldny.dragonball.core.navigation.CHARACTERS_SCREEN_ROUTE
+import com.haldny.dragonball.core.navigation.CHARACTER_DETAIL_SCREEN_ROUTE
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
@@ -46,15 +48,15 @@ fun Navigation(
             )
         }
 
-//        composable(
-//            route = DETAILS_SCREEN
-//        ) { navBackStackEntry ->
-//            val id = navController.previousBackStackEntry?.savedStateHandle?.get<Int>("id")
-//            MovieDetailsScreen(
-//                id = id ?: 0,
-//                navController = navController
-//            )
-//        }
+        composable(
+            route = CHARACTER_DETAIL_SCREEN_ROUTE
+        ) { _ ->
+            val id = navController.previousBackStackEntry?.savedStateHandle?.get<Int>("id")
+            CharacterDetailScreen(
+                id = id ?: 0,
+                navController = navController
+            )
+        }
 
     }
 }

@@ -9,6 +9,8 @@ android {
 
 dependencies {
     implementation(project(":core:design"))
+    implementation(project(":core:navigation"))
+    implementation(project(":character-detail:view"))
     implementation(project(":characters:view"))
     implementation(libs.core.ktx)
     implementation(libs.lifecycle.runtime.ktx)
