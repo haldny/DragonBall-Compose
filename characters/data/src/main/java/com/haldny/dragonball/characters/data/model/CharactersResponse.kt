@@ -12,9 +12,9 @@ data class Character (
     @SerializedName("ki") var ki : String? = null,
     @SerializedName("maxKi") val maxKi : String? = null,
     @SerializedName("race") val race : String? = null,
-    @SerializedName("gender") var gender : String? = null,
-    @SerializedName("description") var description : String? = null,
-    @SerializedName("image") var image : String? = null,
-    @SerializedName("affiliation") var affiliation : String? = null,
-    @SerializedName("deletedAt") var deletedAt : String? = null
+    @SerializedName("gender") val gender : String? = null,
+    @SerializedName("description") val description : String? = null,
+    @SerializedName("image") val image : String? = null,
+    @SerializedName("affiliation") val affiliation : String? = null,
+    @SerializedName("deletedAt") val deletedAt : String? = null
 )

@@ -11,6 +11,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
@@ -31,11 +32,11 @@ fun CharacterDetailScreen(
         creationCallback = { factory -> factory.create(id = id) }
     )
 
-    val state = viewModel.state.collectAsStateWithLifecycle()
-    when (state.value) {
+    val state by viewModel.state.collectAsStateWithLifecycle()
+    when (state) {
         UiState.Loading -> LoadingScreen(modifier = modifier)
         UiState.Error -> ErrorScreen(modifier = modifier) { viewModel.getCharacterDetail(id) }
-        is UiState.Loaded -> CharacterScreen(modifier = modifier, state.value as UiState.Loaded)
+        is UiState.Loaded -> CharacterScreen(modifier = modifier, state as UiState.Loaded)
     }
 }
 

@@ -14,6 +14,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -35,12 +36,12 @@ fun CharactersScreen(
     navController: NavHostController,
     viewModel: CharactersViewModel = hiltViewModel()
 ) {
-    val state = viewModel.state.collectAsStateWithLifecycle()
-    when (state.value) {
+    val state by viewModel.state.collectAsStateWithLifecycle()
+    when (state) {
         UiState.Loading -> LoadingScreen(modifier = modifier)
         UiState.Error, UiState.Empty -> ErrorScreen(modifier = modifier) { viewModel.loadCharacters() }
         is UiState.Loaded -> {
-            ListCharactersScreen(modifier = modifier, state.value as UiState.Loaded) {
+            ListCharactersScreen(modifier = modifier, state as UiState.Loaded) {
                 navController.openCharacterDetails(it)
             }
         }
