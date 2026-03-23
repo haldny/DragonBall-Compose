@@ -9,6 +9,8 @@ android {
 }
 
 dependencies {
+    implementation(platform(libs.compose.bom))
+    implementation(libs.material.icons.extended)
     implementation(project(":core:business"))
     implementation(project(":core:design"))
     implementation(project(":character-detail:data"))
@@ -21,7 +23,6 @@ dependencies {
     implementation(libs.core.ktx)
     implementation(libs.appcompat)
     implementation(libs.material)
-    implementation(libs.androidx.navigation.runtime.ktx)
     implementation(libs.kotlinx.collections.immutable)
     implementation(libs.hilt.compose)
     implementation(libs.lifecycle.runtime.compose)

@@ -6,12 +6,14 @@ plugins {
 
 android {
     namespace = "com.haldny.dragonball.characters.view"
+    defaultConfig {
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+    }
 }
 
 dependencies {
     implementation(project(":core:business"))
     implementation(project(":core:design"))
-    implementation(project(":core:navigation"))
     implementation(project(":characters:data"))
     implementation(project(":characters:domain"))
     implementation(libs.activity.compose)
@@ -22,7 +24,6 @@ dependencies {
     implementation(libs.core.ktx)
     implementation(libs.appcompat)
     implementation(libs.material)
-    implementation(libs.androidx.navigation.runtime.ktx)
     implementation(libs.kotlinx.collections.immutable)
     implementation(libs.hilt.compose)
     implementation(libs.lifecycle.runtime.compose)
@@ -33,6 +34,9 @@ dependencies {
     testImplementation(libs.androidx.junit)
     testImplementation(libs.androidx.core.testing)
     testImplementation(libs.kotlinx.coroutines.test)
+    androidTestImplementation(platform(libs.compose.bom))
+    androidTestImplementation(libs.ui.test.junit4)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.espresso.core)
+    debugImplementation(libs.ui.test.manifest)
 }

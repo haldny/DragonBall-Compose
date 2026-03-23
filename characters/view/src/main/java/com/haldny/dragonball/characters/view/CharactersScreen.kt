@@ -1,116 +1,130 @@
 package com.haldny.dragonball.characters.view
 
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.material3.Card
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
+import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.navigation.NavHostController
-import coil.compose.AsyncImage
-import com.haldny.dragonball.characters.domain.DragonBallCharacter
-import com.haldny.dragonball.core.navigation.openCharacterDetails
+import com.haldny.dragonball.design.components.CharacterGridItem
+import com.haldny.dragonball.design.screens.EmptyScreen
 import com.haldny.dragonball.design.screens.ErrorScreen
 import com.haldny.dragonball.design.screens.LoadingScreen
+import com.haldny.dragonball.design.theme.Dimens
+import kotlinx.coroutines.flow.distinctUntilChanged
 
 @Composable
 fun CharactersScreen(
+    onNavigateToDetail: (Int) -> Unit,
     modifier: Modifier = Modifier,
-    navController: NavHostController,
-    viewModel: CharactersViewModel = hiltViewModel()
+    viewModel: CharactersViewModel = hiltViewModel(),
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
-    when (state) {
-        UiState.Loading -> LoadingScreen(modifier = modifier)
-        UiState.Error, UiState.Empty -> ErrorScreen(modifier = modifier) { viewModel.loadCharacters() }
-        is UiState.Loaded -> {
-            ListCharactersScreen(modifier = modifier, state as UiState.Loaded) {
-                navController.openCharacterDetails(it)
+
+    LaunchedEffect(Unit) {
+        viewModel.uiEffect.collect { effect ->
+            when (effect) {
+                is CharactersUiEffect.NavigateToDetail -> onNavigateToDetail(effect.id)
             }
         }
+    }
+
+    when (val ui = state) {
+        CharactersUiState.InitialLoading -> LoadingScreen(
+            modifier = modifier.testTag(CharactersListTestTags.LOADING)
+        )
+        CharactersUiState.Error -> ErrorScreen(
+            modifier = modifier.testTag(CharactersListTestTags.ERROR)
+        ) { viewModel.onAction(CharactersUserAction.Retry) }
+        CharactersUiState.Empty -> EmptyScreen(
+            modifier = modifier.testTag(CharactersListTestTags.EMPTY)
+        ) { viewModel.onAction(CharactersUserAction.Refresh) }
+        is CharactersUiState.Loaded -> ListCharactersScreen(
+            modifier = modifier,
+            state = ui,
+            onItemClick = { viewModel.onAction(CharactersUserAction.OpenCharacter(it)) },
+            onLoadMore = { viewModel.onAction(CharactersUserAction.LoadNextPage) },
+        )
     }
 }
 
 @Composable
 fun ListCharactersScreen(
+    state: CharactersUiState.Loaded,
+    onItemClick: (id: Int) -> Unit,
+    onLoadMore: () -> Unit,
     modifier: Modifier = Modifier,
-    state: UiState.Loaded,
-    onItemClickListener: (id: Int) -> Unit
 ) {
-    Box(modifier = Modifier.fillMaxSize(), content = {
-        LazyVerticalGrid(
-            modifier = Modifier
-                .fillMaxSize(),
-            columns = GridCells.Fixed(2),
-            contentPadding = PaddingValues(8.dp),
-            content = {
-                items(count = state.characters.size) {
-                    CharacterItemScreen(
-                        modifier = modifier,
-                        item = state.characters[it],
-                        onItemClickListener = onItemClickListener
-                    )
+    val content = state.content
+    val gridState = rememberLazyGridState()
+
+    LaunchedEffect(gridState, content.characters.size, content.hasNextPage, content.isAppending) {
+        snapshotFlow {
+            val layoutInfo = gridState.layoutInfo
+            val lastVisible = layoutInfo.visibleItemsInfo.lastOrNull()?.index
+            val total = layoutInfo.totalItemsCount
+            if (lastVisible == null || total == 0) {
+                null
+            } else {
+                Triple(lastVisible, total, content.isAppending)
+            }
+        }
+            .distinctUntilChanged()
+            .collect { triple ->
+                if (triple == null) return@collect
+                val (lastVisibleIndex, totalItems, isAppending) = triple
+                if (isAppending || !content.hasNextPage) return@collect
+                if (lastVisibleIndex >= totalItems - 2) {
+                    onLoadMore()
                 }
             }
-        )
-    })
-}
+    }
 
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-private fun CharacterItemScreen(
-    modifier: Modifier = Modifier,
-    item: DragonBallCharacter,
-    onItemClickListener: (id: Int) -> Unit
-) {
-    Card(modifier = Modifier
-        .fillMaxWidth()
-        .height(250.dp)
-        .padding(8.dp),
-        onClick = {
-            onItemClickListener.invoke(item.id)
-        }, content = {
-            Column(
-                content = {
-                    AsyncImage(
-                        modifier = Modifier
-                            .height(180.dp)
-                            .fillMaxWidth(),
-                        model = item.image,
-                        contentDescription = null,
-                        contentScale = ContentScale.Fit,
-                    )
-
-                    Box(modifier = Modifier
-                        .fillMaxSize(),
-                        contentAlignment = Alignment.Center,
-                        content = {
-                            Text(
-                                text = item.name,
-                                textAlign = TextAlign.Center,
-                                fontSize = 22.sp,
-                                maxLines = 1,
-                                color = MaterialTheme.colorScheme.primary
-                            )
-                        }
-                    )
-                })
-        })
+    LazyVerticalGrid(
+        state = gridState,
+        modifier = modifier
+            .fillMaxSize()
+            .testTag(CharactersListTestTags.LIST),
+        columns = GridCells.Fixed(2),
+        contentPadding = PaddingValues(Dimens.gridContentPadding),
+    ) {
+        items(
+            items = content.characters,
+            key = { it.id },
+        ) { item ->
+            CharacterGridItem(
+                name = item.name,
+                imageUrl = item.image,
+                onClick = { onItemClick(item.id) },
+            )
+        }
+        if (content.isAppending) {
+            item(span = { GridItemSpan(maxLineSpan) }) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .testTag(CharactersListTestTags.APPEND_LOADING)
+                        .padding(16.dp),
+                    contentAlignment = Alignment.Center,
+                ) {
+                    CircularProgressIndicator()
+                }
+            }
+        }
+    }
 }

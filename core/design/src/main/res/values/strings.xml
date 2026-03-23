@@ -2,4 +2,9 @@
 <resources>
     <string name="error_message_text">Aconteceu um erro processando a sua requisição</string>
     <string name="button_try_again_text">Tentar novamente</string>
+    <string name="empty_characters_message">Nenhum personagem encontrado.</string>
+    <string name="button_refresh_text">Atualizar</string>
+    <string name="characters_list_title">Personagens</string>
+    <string name="character_detail_title">Detalhe</string>
+    <string name="content_description_back">Voltar</string>
 </resources>

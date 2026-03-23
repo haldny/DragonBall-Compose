@@ -8,5 +8,5 @@ android {
 }
 
 dependencies {
-    implementation(libs.androidx.navigation.runtime.ktx)
+    implementation(libs.androidx.navigation3.runtime)
 }

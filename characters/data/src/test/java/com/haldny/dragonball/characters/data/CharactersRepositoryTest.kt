@@ -4,6 +4,7 @@ import com.haldny.dragonball.characters.data.api.CharactersApi
 import com.haldny.dragonball.characters.data.mapper.toBusinessModel
 import com.haldny.dragonball.characters.data.model.Character
 import com.haldny.dragonball.characters.data.model.CharactersResponse
+import com.haldny.dragonball.characters.domain.CharactersPage
 import com.haldny.dragonball.core.business.BusinessResult
 import io.mockk.coEvery
 import io.mockk.every
@@ -20,46 +21,48 @@ class CharactersRepositoryTest {
     private val charactersRepository = CharactersRepositoryImpl(api)
 
     @Test
-    fun `given a success response with a valid response body, when get characters is called, then a business result success value is returned`() = runTest {
+    fun `given a success response with a valid response body, when get characters page is called, then a business result success value is returned`() = runTest {
         coEvery {
-            api.getCharacters()
+            api.getCharacters(page = 1, limit = 20)
         } returns Response.success(
             getCharactersResponse()
         )
 
-        val result = charactersRepository.getCharacters()
+        val result = charactersRepository.getCharactersPage(page = 1, limit = 20)
 
         with(result as BusinessResult.Success) {
-            assertEquals(2, data.size)
-            assertEquals(character1.toBusinessModel(), data[0])
-            assertEquals(character2.toBusinessModel(), data[1])
+            assertEquals(2, data.items.size)
+            assertEquals(false, data.hasNextPage)
+            assertEquals(character1.toBusinessModel(), data.items[0])
+            assertEquals(character2.toBusinessModel(), data.items[1])
         }
     }
 
     @Test
-    fun `given a success response with an empty list, when get characters is called, then a business result success value is returned with empty data`() = runTest {
+    fun `given a success response with an empty list, when get characters page is called, then success has empty items and no next page`() = runTest {
         coEvery {
-            api.getCharacters()
+            api.getCharacters(page = 1, limit = 20)
         } returns Response.success(
             getEmptyCharactersResponse()
         )
 
-        val result = charactersRepository.getCharacters()
+        val result = charactersRepository.getCharactersPage(page = 1, limit = 20)
 
-        with(result as BusinessResult.Success) {
-            assertEquals(0, data.size)
+        with(result as BusinessResult.Success<CharactersPage>) {
+            assertEquals(0, data.items.size)
+            assertEquals(false, data.hasNextPage)
         }
     }
 
     @Test
-    fun `given a failure response, when get characters is called, then a business result with a failure value must be returned`() = runTest {
+    fun `given a failure response, when get characters page is called, then a business result with a failure value must be returned`() = runTest {
         val response = mockk<Response<CharactersResponse>> {
             every { isSuccessful } returns false
             every { errorBody() } returns null
         }
-        coEvery { api.getCharacters() } returns response
+        coEvery { api.getCharacters(page = 1, limit = 20) } returns response
 
-        val result = charactersRepository.getCharacters()
+        val result = charactersRepository.getCharactersPage(page = 1, limit = 20)
 
         assertTrue(result is BusinessResult.Failure)
     }

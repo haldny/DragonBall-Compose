@@ -7,7 +7,7 @@ import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 internal fun Project.configureAndroidKotlin(
-    extension: CommonExtension<*, *, *, *, *>,
+    extension: CommonExtension<*, *, *, *, *, *>,
 ) {
     with(extension) {
         compileSdk = libs.findVersion("compile-sdk").get().toString().toInt()

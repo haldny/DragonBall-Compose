@@ -8,35 +8,61 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
+import com.haldny.dragonball.design.R
+import com.haldny.dragonball.design.components.DragonBallScaffold
 import com.haldny.dragonball.design.screens.ErrorScreen
 import com.haldny.dragonball.design.screens.LoadingScreen
+import com.haldny.dragonball.design.theme.Dimens
 
 @Composable
 fun CharacterDetailScreen(
-    modifier: Modifier = Modifier,
     id: Int,
-    navController: NavHostController
+    onBack: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     val viewModel = hiltViewModel<CharacterDetailViewModel, CharacterDetailViewModel.Factory>(
         creationCallback = { factory -> factory.create(id = id) }
     )
 
     val state by viewModel.state.collectAsStateWithLifecycle()
-    when (state) {
-        UiState.Loading -> LoadingScreen(modifier = modifier)
-        UiState.Error -> ErrorScreen(modifier = modifier) { viewModel.getCharacterDetail(id) }
-        is UiState.Loaded -> CharacterScreen(modifier = modifier, state as UiState.Loaded)
+    val context = LocalContext.current
+
+    DragonBallScaffold(
+        title = context.getString(R.string.character_detail_title),
+        navigationIcon = {
+            IconButton(onClick = onBack) {
+                Icon(
+                    imageVector = Icons.Filled.ArrowBack,
+                    contentDescription = context.getString(R.string.content_description_back),
+                )
+            }
+        },
+    ) { paddingValues ->
+        when (val ui = state) {
+            UiState.Loading -> LoadingScreen(modifier = modifier.padding(paddingValues))
+            UiState.Error -> ErrorScreen(modifier = modifier.padding(paddingValues)) {
+                viewModel.getCharacterDetail(id)
+            }
+            is UiState.Loaded -> CharacterScreen(
+                modifier = modifier.padding(paddingValues),
+                state = ui,
+            )
+        }
     }
 }
 
@@ -45,17 +71,18 @@ fun CharacterScreen(
     modifier: Modifier = Modifier,
     state: UiState.Loaded,
 ) {
-    Column(modifier = Modifier
-        .fillMaxSize()
-        .padding(32.dp)
-        .verticalScroll(rememberScrollState())
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .padding(Dimens.screenPadding)
+            .verticalScroll(rememberScrollState())
     ) {
         AsyncImage(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(180.dp),
+                .height(Dimens.characterImageHeight),
             model = state.character.image,
-            contentDescription = null,
+            contentDescription = state.character.name,
             contentScale = ContentScale.Fit,
         )
 
@@ -75,9 +102,9 @@ fun CharacterScreen(
         AsyncImage(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(180.dp),
+                .height(Dimens.characterImageHeight),
             model = state.character.originPlanet?.image,
-            contentDescription = null,
+            contentDescription = state.character.originPlanet?.name,
             contentScale = ContentScale.Fit,
         )
 

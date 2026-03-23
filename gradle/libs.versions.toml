@@ -1,6 +1,6 @@
 [versions]
-agp = "8.2.2"
-kotlin = "1.9.0"
+agp = "8.9.1"
+kotlin = "1.9.25"
 core-ktx = "1.12.0"
 junit = "4.13.2"
 androidx-test-ext-junit = "1.1.5"
@@ -10,7 +10,8 @@ activity-compose = "1.8.2"
 compose-bom = "2023.08.00"
 hilt = "2.50"
 hilt-compose = "1.2.0"
-ksp = "1.9.21-1.0.16"
+ksp = "1.9.25-1.0.20"
+nav3 = "1.0.1"
 org-jetbrains-kotlin-jvm = "1.9.0"
 retrofit = "2.9.0"
 okhttpLogging = "4.12.0"
@@ -28,9 +29,9 @@ turbine = "1.1.0"
 
 # Project
 target-sdk = "34"
-compile-sdk = "34"
+compile-sdk = "36"
 min-sdk = "24"
-androidx-compose-compiler = "1.5.1"
+androidx-compose-compiler = "1.5.15"
 version-code = "1"
 version-name = "1.0.0"
 application-id = "com.haldny.dragonball"
@@ -55,6 +56,7 @@ ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview
 ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 material3 = { group = "androidx.compose.material3", name = "material3" }
+material-icons-extended = { group = "androidx.compose.material", name = "material-icons-extended" }
 hilt = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
 hilt-compiler = { group = "com.google.dagger", name = "hilt-compiler", version.ref = "hilt" }
 hilt-testing = { group = "com.google.dagger", name = "hilt-android-testing", version.ref = "hilt" }
@@ -71,6 +73,8 @@ appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "a
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigationCompose" }
 androidx-navigation-runtime-ktx = { group = "androidx.navigation", name = "navigation-runtime-ktx", version.ref = "navigationRuntimeKtx" }
+androidx-navigation3-runtime = { group = "androidx.navigation3", name = "navigation3-runtime", version.ref = "nav3" }
+androidx-navigation3-ui = { group = "androidx.navigation3", name = "navigation3-ui", version.ref = "nav3" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
