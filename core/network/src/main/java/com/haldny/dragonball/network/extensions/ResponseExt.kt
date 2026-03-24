@@ -19,7 +19,9 @@ fun <T> Response<T>.getErrorFromResponse(): BusinessResult.Failure {
         try {
             BusinessResult.Failure(BusinessException(JSONObject(it.string()).getString("message")))
         } catch (e: JSONException) {
-            BusinessResult.Failure(BusinessException("Parsing server error response failed"))
+            BusinessResult.Failure(
+                BusinessException("Parsing server error response failed", e),
+            )
         }
     } ?: BusinessResult.Failure(BusinessException("Server returned invalid error response."))
 }

@@ -1,4 +1,4 @@
-package com.haldny.dragonball.character.detail.view
+package com.haldny.dragonball.testing.fake
 
 import com.haldny.dragonball.character.detail.domain.CharacterDetailRepository
 import com.haldny.dragonball.character.detail.domain.DragonBallCharacterDetail

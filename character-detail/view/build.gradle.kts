@@ -36,6 +36,8 @@ dependencies {
     testImplementation(libs.androidx.junit)
     testImplementation(libs.androidx.core.testing)
     testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(project(":testing"))
+    androidTestImplementation(project(":testing"))
     androidTestImplementation(platform(libs.compose.bom))
     androidTestImplementation(libs.ui.test.junit4)
     androidTestImplementation(libs.androidx.junit)

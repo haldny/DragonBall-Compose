@@ -1,9 +1,10 @@
 package com.haldny.dragonball.character.detail.data
 
 import com.haldny.dragonball.character.detail.data.api.CharacterDetailApi
-import com.haldny.dragonball.character.detail.data.mapper.toBusinessModel
 import com.haldny.dragonball.character.detail.data.model.CharacterDetailResponse
 import com.haldny.dragonball.core.business.BusinessResult
+import com.haldny.dragonball.testing.fixtures.CharacterDetailApiTestFixtures
+import com.haldny.dragonball.testing.fixtures.DomainTestFixtures
 import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
@@ -27,13 +28,13 @@ class CharacterDetailRepositoryImplTest {
         coEvery {
             api.getCharacterDetail(any())
         } returns Response.success(
-            characterDetail
+            CharacterDetailApiTestFixtures.characterDetailSuccess,
         )
 
         val result = characterDetailRepository.getCharacterDetail(1)
 
         with(result as BusinessResult.Success) {
-            assertEquals(characterDetail.toBusinessModel(), data)
+            assertEquals(DomainTestFixtures.characterDetailMinimalMapped, data)
         }
     }
 
@@ -49,15 +50,4 @@ class CharacterDetailRepositoryImplTest {
 
         assertTrue(result is BusinessResult.Failure)
     }
-
-    private val characterDetail = CharacterDetailResponse(
-        id = 1,
-        name = "Name 1",
-        ki = "Ki 1",
-        maxKi = "Max Ki 1",
-        image = "Image 1",
-        description = "Description 1",
-        gender = "Female",
-        race = "Saiyan"
-    )
 }

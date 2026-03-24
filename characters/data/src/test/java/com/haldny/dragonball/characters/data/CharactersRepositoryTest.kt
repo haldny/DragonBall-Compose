@@ -2,10 +2,10 @@ package com.haldny.dragonball.characters.data
 
 import com.haldny.dragonball.characters.data.api.CharactersApi
 import com.haldny.dragonball.characters.data.mapper.toBusinessModel
-import com.haldny.dragonball.characters.data.model.Character
 import com.haldny.dragonball.characters.data.model.CharactersResponse
 import com.haldny.dragonball.characters.domain.CharactersPage
 import com.haldny.dragonball.core.business.BusinessResult
+import com.haldny.dragonball.testing.fixtures.CharactersApiTestFixtures
 import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
@@ -29,7 +29,7 @@ class CharactersRepositoryTest {
         coEvery {
             api.getCharacters(page = 1, limit = 20)
         } returns Response.success(
-            getCharactersResponse()
+            CharactersApiTestFixtures.charactersResponseTwoItems(),
         )
 
         val result = charactersRepository.getCharactersPage(page = 1, limit = 20)
@@ -37,8 +37,14 @@ class CharactersRepositoryTest {
         with(result as BusinessResult.Success) {
             assertEquals(2, data.items.size)
             assertEquals(false, data.hasNextPage)
-            assertEquals(character1.toBusinessModel(), data.items[0])
-            assertEquals(character2.toBusinessModel(), data.items[1])
+            assertEquals(
+                CharactersApiTestFixtures.characterDto1.toBusinessModel(),
+                data.items[0],
+            )
+            assertEquals(
+                CharactersApiTestFixtures.characterDto2.toBusinessModel(),
+                data.items[1],
+            )
         }
     }
 
@@ -47,7 +53,7 @@ class CharactersRepositoryTest {
         coEvery {
             api.getCharacters(page = 1, limit = 20)
         } returns Response.success(
-            getEmptyCharactersResponse()
+            CharactersApiTestFixtures.charactersResponseEmpty(),
         )
 
         val result = charactersRepository.getCharactersPage(page = 1, limit = 20)
@@ -70,38 +76,4 @@ class CharactersRepositoryTest {
 
         assertTrue(result is BusinessResult.Failure)
     }
-
-    private fun getCharactersResponse() = CharactersResponse(
-        characters = listOf(
-            character1,
-            character2
-        )
-    )
-
-    private fun getEmptyCharactersResponse() = CharactersResponse(
-        characters = listOf()
-    )
-
-    private val character1 = Character(
-        id = 1,
-        name = "Name 1",
-        ki = "Ki 1",
-        maxKi = "Max Ki 1",
-        image = "Image 1",
-        description = "Description 1",
-        gender = "Female",
-        race = "Saiyan"
-    )
-
-    private val character2 = Character(
-        id = 2,
-        name = "Name 2",
-        ki = "Ki 2",
-        maxKi = "Max Ki 2",
-        image = "Image 2",
-        description = "Description 2",
-        gender = "Male",
-        race = "Namekian"
-    )
-
 }

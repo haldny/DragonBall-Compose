@@ -1,0 +1,37 @@
+# Detekt — https://detekt.dev/docs/rules/
+config:
+  validation: true
+
+build:
+  maxIssues: 0
+
+style:
+  MagicNumber:
+    active: false
+  MaxLineLength:
+    active: true
+    maxLineLength: 140
+    excludePackageStatements: true
+    excludeImportStatements: true
+    excludes: ['**/test/**', '**/androidTest/**']
+  WildcardImport:
+    active: false
+  UnusedPrivateMember:
+    active: true
+    ignoreAnnotated:
+      - 'Preview'
+
+complexity:
+  LongMethod:
+    threshold: 80
+  LongParameterList:
+    functionThreshold: 8
+    constructorThreshold: 8
+
+empty-blocks:
+  EmptyFunctionBlock:
+    ignoreOverridden: true
+
+naming:
+  FunctionNaming:
+    ignoreAnnotated: [ 'Composable' ]

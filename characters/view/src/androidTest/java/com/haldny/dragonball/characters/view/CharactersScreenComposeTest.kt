@@ -5,10 +5,9 @@ import androidx.compose.ui.test.hasTestTag
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.haldny.dragonball.characters.domain.DragonBallCharacter
-import com.haldny.dragonball.characters.domain.Gender
-import com.haldny.dragonball.characters.domain.Race
 import com.haldny.dragonball.design.theme.DragonBallComposeTheme
+import com.haldny.dragonball.testing.fake.FakeCharactersRepository
+import com.haldny.dragonball.testing.fixtures.DomainTestFixtures
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -18,17 +17,6 @@ class CharactersScreenComposeTest {
 
     @get:Rule
     val composeRule = createComposeRule()
-
-    private val sampleCharacter = DragonBallCharacter(
-        id = 1,
-        name = "Goku",
-        ki = "0",
-        maxKi = "0",
-        image = "https://example.com/goku.png",
-        description = "",
-        gender = Gender.MALE,
-        race = Race.SAIYAN,
-    )
 
     @Test
     fun when_repository_never_completes_then_loading_tag_is_shown() {
@@ -51,7 +39,7 @@ class CharactersScreenComposeTest {
     fun when_repository_returns_characters_then_list_tag_is_shown() {
         val repo = FakeCharactersRepository(
             scenario = FakeCharactersRepository.Scenario.Success,
-            characters = listOf(sampleCharacter),
+            characters = listOf(DomainTestFixtures.gokuListCharacter),
         )
         val viewModel = CharactersViewModel(repository = repo)
 

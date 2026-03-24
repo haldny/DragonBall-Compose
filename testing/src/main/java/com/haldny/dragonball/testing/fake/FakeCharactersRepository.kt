@@ -1,4 +1,4 @@
-package com.haldny.dragonball.characters.view
+package com.haldny.dragonball.testing.fake
 
 import com.haldny.dragonball.characters.domain.CharactersPage
 import com.haldny.dragonball.characters.domain.CharactersRepository
@@ -29,10 +29,10 @@ class FakeCharactersRepository(
         return when (scenario) {
             Scenario.LoadingForever -> error("unreachable")
             Scenario.Success -> BusinessResult.Success(
-                CharactersPage(items = characters, hasNextPage = false)
+                CharactersPage(items = characters, hasNextPage = false),
             )
             Scenario.Empty -> BusinessResult.Success(
-                CharactersPage(items = emptyList(), hasNextPage = false)
+                CharactersPage(items = emptyList(), hasNextPage = false),
             )
             Scenario.Error -> BusinessResult.Failure(BusinessException("Test error"))
         }

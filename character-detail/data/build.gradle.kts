@@ -14,6 +14,7 @@ dependencies {
     implementation(project(":core:network"))
     implementation(project(":character-detail:domain"))
     implementation(libs.gson)
+    testImplementation(project(":testing"))
     testImplementation(libs.junit)
     testImplementation(libs.mockk)
     testImplementation(libs.androidx.junit)

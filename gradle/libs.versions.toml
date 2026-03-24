@@ -12,7 +12,6 @@ hilt = "2.50"
 hilt-compose = "1.2.0"
 ksp = "1.9.25-1.0.20"
 nav3 = "1.0.1"
-org-jetbrains-kotlin-jvm = "1.9.0"
 retrofit = "2.9.0"
 okhttpLogging = "4.12.0"
 appcompat = "1.6.1"
@@ -20,12 +19,14 @@ material = "1.11.0"
 mockk = "1.13.2"
 androidx-junit = "1.1.5"
 kotlinx-coroutines-test = "1.8.0"
+kotlinx-coroutines-core = "1.8.0"
 navigationCompose = "2.7.7"
 navigationRuntimeKtx = "2.7.7"
 kotlinx-collections-immutable = "0.3.7"
 coil-compose = "2.6.0"
 androidx-core-testing = "2.1.0"
 turbine = "1.1.0"
+detekt = "1.23.7"
 
 # Project
 target-sdk = "34"
@@ -43,6 +44,7 @@ mockk = { group = "io.mockk", name = "mockk", version.ref = "mockk" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidx-junit" }
 androidx-core-testing = { group = "androidx.arch.core", name = "core-testing", version.ref = "androidx-core-testing" }
 kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "kotlinx-coroutines-test" }
+kotlinx-coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "kotlinx-coroutines-core" }
 turbine = { group = "app.cash.turbine", name = "turbine", version.ref = "turbine" }
 espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espresso-core" }
 lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycle-runtime-ktx" }
@@ -82,7 +84,8 @@ android-library = { id = "com.android.library", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
-org-jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "org-jetbrains-kotlin-jvm" }
+org-jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
 
 # Plugins defined by this project
 internal-plugin-application = { id = "internal.plugin.application", version = "unspecified" }

@@ -6,11 +6,9 @@ import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.haldny.dragonball.character.detail.domain.DragonBallCharacterDetail
-import com.haldny.dragonball.character.detail.domain.Gender
-import com.haldny.dragonball.character.detail.domain.OriginPlanet
-import com.haldny.dragonball.character.detail.domain.Race
 import com.haldny.dragonball.design.theme.DragonBallComposeTheme
+import com.haldny.dragonball.testing.fake.FakeCharacterDetailRepository
+import com.haldny.dragonball.testing.fixtures.DomainTestFixtures
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -21,24 +19,7 @@ class CharacterDetailScreenComposeTest {
     @get:Rule
     val composeRule = createComposeRule()
 
-    private val sampleCharacter = DragonBallCharacterDetail(
-        id = 1,
-        name = "Goku",
-        ki = "1,000",
-        maxKi = "9,000",
-        image = "https://example.com/goku.png",
-        description = "Saiyan warrior",
-        gender = Gender.MALE,
-        race = Race.SAIYAN,
-        originPlanet = OriginPlanet(
-            id = 2,
-            name = "Earth",
-            isDestroyed = false,
-            description = "Home planet",
-            image = "https://example.com/earth.png",
-        ),
-        transformations = emptyList(),
-    )
+    private val sampleCharacter = DomainTestFixtures.gokuCharacterDetail
 
     @Test
     fun when_repository_never_completes_then_loading_tag_is_shown() {

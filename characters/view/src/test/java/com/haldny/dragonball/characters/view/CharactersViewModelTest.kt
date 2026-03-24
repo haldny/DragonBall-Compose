@@ -6,12 +6,10 @@ import app.cash.turbine.test
 import com.haldny.dragonball.characters.domain.CharactersPage
 import com.haldny.dragonball.characters.domain.CharactersPagingConfig.PAGE_LIMIT
 import com.haldny.dragonball.characters.domain.CharactersRepository
-import com.haldny.dragonball.characters.domain.DragonBallCharacter
-import com.haldny.dragonball.characters.domain.Gender
-import com.haldny.dragonball.characters.domain.Race
-import com.haldny.dragonball.characters.support.TestCoroutineRule
+import com.haldny.dragonball.testing.support.TestCoroutineRule
 import com.haldny.dragonball.core.business.BusinessResult
 import com.haldny.dragonball.core.business.exceptions.BusinessException
+import com.haldny.dragonball.testing.fixtures.DomainTestFixtures
 import io.mockk.coEvery
 import io.mockk.mockk
 import junit.framework.TestCase.assertEquals
@@ -37,7 +35,10 @@ class CharactersViewModelTest {
             repository.getCharactersPage(page = 1, limit = PAGE_LIMIT)
         } returns BusinessResult.Success(
             CharactersPage(
-                items = listOf(character1, character2),
+                items = listOf(
+                    DomainTestFixtures.dragonBallCharacter1,
+                    DomainTestFixtures.dragonBallCharacter2,
+                ),
                 hasNextPage = false,
             )
         )
@@ -45,7 +46,10 @@ class CharactersViewModelTest {
         val viewModel = CharactersViewModel(repository = repository)
         val expected = CharactersUiState.Loaded(
             CharactersListContent(
-                characters = listOf(character1, character2).toImmutableList(),
+                characters = listOf(
+                    DomainTestFixtures.dragonBallCharacter1,
+                    DomainTestFixtures.dragonBallCharacter2,
+                ).toImmutableList(),
                 hasNextPage = false,
                 isAppending = false,
                 nextPageToLoad = 2,
@@ -92,14 +96,17 @@ class CharactersViewModelTest {
         } returnsMany listOf(
             BusinessResult.Failure(BusinessException("Test Exception")),
             BusinessResult.Success(
-                CharactersPage(items = listOf(character1), hasNextPage = false)
+                CharactersPage(
+                    items = listOf(DomainTestFixtures.dragonBallCharacter1),
+                    hasNextPage = false,
+                )
             )
         )
 
         val viewModel = CharactersViewModel(repository = repository)
         val expected = CharactersUiState.Loaded(
             CharactersListContent(
-                characters = listOf(character1).toImmutableList(),
+                characters = listOf(DomainTestFixtures.dragonBallCharacter1).toImmutableList(),
                 hasNextPage = false,
                 isAppending = false,
                 nextPageToLoad = 2,
@@ -129,26 +136,4 @@ class CharactersViewModelTest {
         }
         return first
     }
-
-    private val character1 = DragonBallCharacter(
-        id = 1,
-        name = "Name 1",
-        ki = "Ki 1",
-        maxKi = "Max Ki 1",
-        image = "Image 1",
-        description = "Description 1",
-        gender = Gender.FEMALE,
-        race = Race.SAIYAN
-    )
-
-    private val character2 = DragonBallCharacter(
-        id = 2,
-        name = "Name 2",
-        ki = "Ki 2",
-        maxKi = "Max Ki 2",
-        image = "Image 2",
-        description = "Description 2",
-        gender = Gender.MALE,
-        race = Race.NAMEKIAN
-    )
 }
