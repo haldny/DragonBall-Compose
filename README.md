@@ -45,11 +45,14 @@ flowchart TB
     APP[app]
   end
 
-  subgraph features["Features"]
+  subgraph characters_feat["characters"]
     CV[characters:view]
-    CDV[character-detail:view]
     CDATA[characters:data]
     CDOMAIN[characters:domain]
+  end
+
+  subgraph detail_feat["character-detail"]
+    CDV[character-detail:view]
     DDATA[character-detail:data]
     DDOMAIN[character-detail:domain]
   end
@@ -105,16 +108,22 @@ flowchart TB
     TMOD["testing<br/>fakes + fixtures"]
   end
 
-  subgraph prod["Production modules (also on Konsist classpath)"]
+  subgraph core_prod["Core"]
     BUS[core:business]
     DESIGN[core:design]
     NAV[core:navigation]
     NET[core:network]
     DISP[core:dispatchers]
+  end
+
+  subgraph characters_feat["characters"]
     CV[characters:view]
-    CDV[character-detail:view]
     CDATA[characters:data]
     CDOMAIN[characters:domain]
+  end
+
+  subgraph detail_feat["character-detail"]
+    CDV[character-detail:view]
     DDATA[character-detail:data]
     DDOMAIN[character-detail:domain]
   end
