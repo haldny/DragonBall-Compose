@@ -8,19 +8,16 @@ import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import com.haldny.dragonball.design.theme.DragonBallColors
 
-/**
- * Deep-space vertical gradient with a slow radial “ki” pulse for a sci-fi capsule look.
- */
 @Composable
 fun DragonBallAmbientBackground(modifier: Modifier = Modifier) {
     val pulse = rememberInfiniteTransition(label = "ambientKiPulse")
@@ -34,7 +31,7 @@ fun DragonBallAmbientBackground(modifier: Modifier = Modifier) {
         label = "pulseAlpha",
     )
 
-    BoxWithConstraints(modifier = modifier.fillMaxSize()) {
+    Box(modifier = modifier.fillMaxSize()) {
         Box(
             modifier = Modifier
                 .fillMaxSize()
@@ -51,17 +48,19 @@ fun DragonBallAmbientBackground(modifier: Modifier = Modifier) {
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .background(
-                    Brush.radialGradient(
-                        colors = listOf(
-                            DragonBallColors.kiGold.copy(alpha = pulseAlpha),
-                            DragonBallColors.auraCyan.copy(alpha = pulseAlpha * 0.45f),
-                            Color.Transparent,
+                .drawBehind {
+                    drawRect(
+                        brush = Brush.radialGradient(
+                            colors = listOf(
+                                DragonBallColors.kiGold.copy(alpha = pulseAlpha),
+                                DragonBallColors.auraCyan.copy(alpha = pulseAlpha * 0.45f),
+                                Color.Transparent,
+                            ),
+                            center = Offset(size.width * 0.5f, size.height * 0.08f),
+                            radius = size.width * 0.95f,
                         ),
-                        center = Offset(constraints.maxWidth * 0.5f, constraints.maxHeight * 0.08f),
-                        radius = constraints.maxWidth * 0.95f,
-                    ),
-                ),
+                    )
+                },
         )
     }
 }

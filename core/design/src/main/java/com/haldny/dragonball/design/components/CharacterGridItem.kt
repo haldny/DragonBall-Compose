@@ -27,9 +27,11 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.material3.ColorScheme
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
@@ -55,9 +57,7 @@ fun CharacterGridItem(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val context = LocalContext.current
     val cardShape = RoundedCornerShape(Dimens.characterCardCornerRadius)
-
     val scheme = MaterialTheme.colorScheme
     Card(
         modifier = modifier
@@ -81,66 +81,82 @@ fun CharacterGridItem(
             containerColor = scheme.surfaceVariant.copy(alpha = CharacterCardAlpha.cardContainer),
         ),
     ) {
-        Column(
+        CharacterGridItemCardContent(
+            name = name,
+            imageUrl = imageUrl,
+            cardShape = cardShape,
+            scheme = scheme,
+        )
+    }
+}
+
+@Composable
+private fun CharacterGridItemCardContent(
+    name: String,
+    imageUrl: String,
+    cardShape: Shape,
+    scheme: ColorScheme,
+) {
+    val context = LocalContext.current
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .clip(cardShape),
+    ) {
+        // Fit keeps the full image visible; Crop was clipping heads/feet on portrait art.
+        Box(
             modifier = Modifier
-                .fillMaxSize()
-                .clip(cardShape),
-        ) {
-            // Fit keeps the full image visible; Crop was clipping heads/feet on portrait art.
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(1f)
-                    .background(
-                        MaterialTheme.colorScheme.surfaceVariant.copy(alpha = CharacterCardAlpha.imageAreaBackground),
-                    ),
-            ) {
-                SubcomposeAsyncImage(
-                    model = ImageRequest.Builder(context)
-                        .data(imageUrl)
-                        .crossfade(CharacterCardMotion.IMAGE_CROSSFADE_DURATION_MS)
-                        .build(),
-                    contentDescription = name,
-                    contentScale = ContentScale.Fit,
-                    modifier = Modifier.fillMaxSize(),
-                    loading = {
-                        CharacterCardImageLoading()
-                    },
-                    success = {
-                        SubcomposeAsyncImageContent()
-                    },
-                    error = {
-                        CharacterCardImageError()
-                    },
-                )
-            }
-            Text(
-                text = name,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .background(
-                        Brush.horizontalGradient(
-                            colors = listOf(
-                                scheme.primary.copy(alpha = 0.52f),
-                                scheme.secondary.copy(alpha = 0.28f),
-                            ),
-                        ),
-                    )
-                    .padding(
-                        horizontal = Dimens.characterNamePaddingHorizontal,
-                        vertical = Dimens.characterNamePaddingVertical,
-                    ),
-                style = MaterialTheme.typography.titleMedium.copy(
-                    fontWeight = FontWeight.SemiBold,
-                    lineHeight = MaterialTheme.typography.titleMedium.lineHeight *
-                        CharacterCardTypography.TITLE_LINE_HEIGHT_MULTIPLIER,
+                .fillMaxWidth()
+                .weight(1f)
+                .background(
+                    scheme.surfaceVariant.copy(alpha = CharacterCardAlpha.imageAreaBackground),
                 ),
-                color = Color.White,
-                textAlign = TextAlign.Center,
-                maxLines = CharacterCardTypography.TITLE_MAX_LINES,
-                overflow = TextOverflow.Ellipsis,
+        ) {
+            SubcomposeAsyncImage(
+                model = ImageRequest.Builder(context)
+                    .data(imageUrl)
+                    .crossfade(CharacterCardMotion.IMAGE_CROSSFADE_DURATION_MS)
+                    .build(),
+                contentDescription = name,
+                contentScale = ContentScale.Fit,
+                modifier = Modifier.fillMaxSize(),
+                loading = {
+                    CharacterCardImageLoading()
+                },
+                success = {
+                    SubcomposeAsyncImageContent()
+                },
+                error = {
+                    CharacterCardImageError()
+                },
             )
         }
+        Text(
+            text = name,
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(
+                    Brush.horizontalGradient(
+                        colors = listOf(
+                            scheme.primary.copy(alpha = 0.52f),
+                            scheme.secondary.copy(alpha = 0.28f),
+                        ),
+                    ),
+                )
+                .padding(
+                    horizontal = Dimens.characterNamePaddingHorizontal,
+                    vertical = Dimens.characterNamePaddingVertical,
+                ),
+            style = MaterialTheme.typography.titleMedium.copy(
+                fontWeight = FontWeight.SemiBold,
+                lineHeight = MaterialTheme.typography.titleMedium.lineHeight *
+                    CharacterCardTypography.TITLE_LINE_HEIGHT_MULTIPLIER,
+            ),
+            color = Color.White,
+            textAlign = TextAlign.Center,
+            maxLines = CharacterCardTypography.TITLE_MAX_LINES,
+            overflow = TextOverflow.Ellipsis,
+        )
     }
 }
 

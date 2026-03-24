@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="error_message_text">Ocurrió un error al procesar tu solicitud</string>
+    <string name="button_try_again_text">Intentar de nuevo</string>
+    <string name="empty_characters_message">No se encontraron personajes.</string>
+    <string name="button_refresh_text">Actualizar</string>
+    <string name="characters_list_title">Personajes</string>
+    <string name="character_detail_title">Detalle</string>
+    <string name="content_description_back">Atrás</string>
+    <string name="detail_tab_character">Personaje</string>
+    <string name="detail_tab_planet">Planeta</string>
+    <string name="detail_planet_unavailable">No hay información del planeta de origen.</string>
+    <string name="detail_label_ki">Ki</string>
+    <string name="detail_label_max_ki">Ki máximo</string>
+    <string name="detail_label_gender">Género</string>
+    <string name="detail_label_race">Raza</string>
+    <string name="detail_label_description">Descripción</string>
+    <string name="detail_label_destroyed">Destruido</string>
+    <string name="detail_yes">Sí</string>
+    <string name="detail_no">No</string>
+</resources>
