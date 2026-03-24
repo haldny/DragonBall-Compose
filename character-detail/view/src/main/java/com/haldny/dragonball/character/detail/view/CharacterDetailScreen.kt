@@ -19,6 +19,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -34,12 +35,11 @@ fun CharacterDetailScreen(
     id: Int,
     onBack: () -> Unit,
     modifier: Modifier = Modifier,
-) {
-    val viewModel = hiltViewModel<CharacterDetailViewModel, CharacterDetailViewModel.Factory>(
+    viewModel: CharacterDetailViewModel = hiltViewModel<CharacterDetailViewModel, CharacterDetailViewModel.Factory>(
         key = id.toString(),
-        creationCallback = { factory -> factory.create(id = id) }
-    )
-
+        creationCallback = { factory -> factory.create(id = id) },
+    ),
+) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val context = LocalContext.current
 
@@ -55,12 +55,22 @@ fun CharacterDetailScreen(
         },
     ) { paddingValues ->
         when (val ui = state) {
-            UiState.Loading -> LoadingScreen(modifier = modifier.padding(paddingValues))
-            UiState.Error -> ErrorScreen(modifier = modifier.padding(paddingValues)) {
+            UiState.Loading -> LoadingScreen(
+                modifier = modifier
+                    .padding(paddingValues)
+                    .testTag(CharacterDetailTestTags.LOADING),
+            )
+            UiState.Error -> ErrorScreen(
+                modifier = modifier
+                    .padding(paddingValues)
+                    .testTag(CharacterDetailTestTags.ERROR),
+            ) {
                 viewModel.getCharacterDetail(id)
             }
             is UiState.Loaded -> CharacterScreen(
-                modifier = modifier.padding(paddingValues),
+                modifier = modifier
+                    .padding(paddingValues)
+                    .testTag(CharacterDetailTestTags.CONTENT),
                 state = ui,
             )
         }

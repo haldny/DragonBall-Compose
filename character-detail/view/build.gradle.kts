@@ -6,6 +6,9 @@ plugins {
 
 android {
     namespace = "com.haldny.dragonball.character.detail.view"
+    defaultConfig {
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+    }
 }
 
 dependencies {
@@ -33,6 +36,9 @@ dependencies {
     testImplementation(libs.androidx.junit)
     testImplementation(libs.androidx.core.testing)
     testImplementation(libs.kotlinx.coroutines.test)
+    androidTestImplementation(platform(libs.compose.bom))
+    androidTestImplementation(libs.ui.test.junit4)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.espresso.core)
+    debugImplementation(libs.ui.test.manifest)
 }
