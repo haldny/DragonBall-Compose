@@ -8,11 +8,11 @@ android {
 }
 
 dependencies {
-    implementation(project(":core:business"))
-    implementation(project(":characters:domain"))
-    implementation(project(":character-detail:domain"))
-    implementation(project(":characters:data"))
-    implementation(project(":character-detail:data"))
+    implementation(projects.core.business)
+    implementation(projects.characters.domain)
+    implementation(projects.characterDetail.domain)
+    implementation(projects.characters.data)
+    implementation(projects.characterDetail.data)
     implementation(libs.junit)
     implementation(libs.kotlinx.coroutines.core)
     implementation(libs.kotlinx.coroutines.test)

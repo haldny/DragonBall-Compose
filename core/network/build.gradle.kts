@@ -9,7 +9,7 @@ android {
 }
 
 dependencies {
-    implementation(project(":core:business"))
+    implementation(projects.core.business)
     implementation(libs.retrofit)
     implementation(libs.gson)
     implementation(libs.okhttp.logging)

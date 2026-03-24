@@ -12,10 +12,10 @@ android {
 }
 
 dependencies {
-    implementation(project(":core:business"))
-    implementation(project(":core:design"))
-    implementation(project(":characters:data"))
-    implementation(project(":characters:domain"))
+    implementation(projects.core.business)
+    implementation(projects.core.design)
+    implementation(projects.characters.data)
+    implementation(projects.characters.domain)
     implementation(libs.activity.compose)
     implementation(libs.ui)
     implementation(libs.ui.graphics)
@@ -34,8 +34,8 @@ dependencies {
     testImplementation(libs.androidx.junit)
     testImplementation(libs.androidx.core.testing)
     testImplementation(libs.kotlinx.coroutines.test)
-    testImplementation(project(":testing"))
-    androidTestImplementation(project(":testing"))
+    testImplementation(projects.testing)
+    androidTestImplementation(projects.testing)
     androidTestImplementation(platform(libs.compose.bom))
     androidTestImplementation(libs.ui.test.junit4)
     androidTestImplementation(libs.androidx.junit)

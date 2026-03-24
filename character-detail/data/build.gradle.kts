@@ -9,12 +9,12 @@ android {
 }
 
 dependencies {
-    implementation(project(":core:dispatchers"))
-    implementation(project(":core:business"))
-    implementation(project(":core:network"))
-    implementation(project(":character-detail:domain"))
+    implementation(projects.core.dispatchers)
+    implementation(projects.core.business)
+    implementation(projects.core.network)
+    implementation(projects.characterDetail.domain)
     implementation(libs.gson)
-    testImplementation(project(":testing"))
+    testImplementation(projects.testing)
     testImplementation(libs.junit)
     testImplementation(libs.mockk)
     testImplementation(libs.androidx.junit)

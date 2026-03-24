@@ -8,10 +8,10 @@ android {
 }
 
 dependencies {
-    implementation(project(":core:design"))
-    implementation(project(":core:navigation"))
-    implementation(project(":character-detail:view"))
-    implementation(project(":characters:view"))
+    implementation(projects.core.design)
+    implementation(projects.core.navigation)
+    implementation(projects.characterDetail.view)
+    implementation(projects.characters.view)
     implementation(libs.core.ktx)
     implementation(libs.lifecycle.runtime.ktx)
     implementation(libs.activity.compose)

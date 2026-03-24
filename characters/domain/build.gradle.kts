@@ -9,5 +9,5 @@ android {
 }
 
 dependencies {
-    implementation(project(":core:business"))
+    implementation(projects.core.business)
 }
