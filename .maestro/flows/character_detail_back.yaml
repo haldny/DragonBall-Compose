@@ -1,0 +1,16 @@
+appId: com.haldny.dragonball
+---
+- launchApp
+- extendedWaitUntil:
+    visible: "Characters"
+    timeout: 10000
+- tapOn:
+    point: "40%, 30%"
+- extendedWaitUntil:
+    visible: "Detail"
+    timeout: 10000
+- tapOn: "Back"
+- extendedWaitUntil:
+    visible: "Characters"
+    timeout: 10000
+- assertVisible: "Characters"

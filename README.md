@@ -28,6 +28,10 @@ To get started with DragonBall-Compose, follow these steps:
 
 3. Build and run the project on an emulator or a physical device.
 
+## UI tests (Maestro)
+
+End-to-end flows live in [`.maestro/flows`](.maestro/flows). Install the [Maestro CLI](https://maestro.mobile.dev/), run `./gradlew :app:installDebug`, then `./scripts/run-maestro.sh`. See [`.maestro/README.md`](.maestro/README.md).
+
 ## Dependencies
 
 - [Jetpack Compose](https://developer.android.com/jetpack/compose): Modern UI toolkit for building native Android UIs.

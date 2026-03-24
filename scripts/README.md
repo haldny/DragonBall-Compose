@@ -35,3 +35,7 @@ SKIP_PUSH_CHECKS=1 git push ...
 When you **push to `main`**, the hook runs `scripts/check-before-push.sh` without `RUN_CONNECTED_TESTS` (same as local default).
 
 Pushes to other branches are not blocked by these checks.
+
+## `run-maestro.sh`
+
+Runs [Maestro](https://maestro.mobile.dev/) flows in `.maestro/flows`. Install the CLI first — see [.maestro/README.md](../.maestro/README.md).
