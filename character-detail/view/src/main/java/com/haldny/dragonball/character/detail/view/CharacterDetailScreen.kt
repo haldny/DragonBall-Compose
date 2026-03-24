@@ -36,6 +36,7 @@ fun CharacterDetailScreen(
     modifier: Modifier = Modifier,
 ) {
     val viewModel = hiltViewModel<CharacterDetailViewModel, CharacterDetailViewModel.Factory>(
+        key = id.toString(),
         creationCallback = { factory -> factory.create(id = id) }
     )
 

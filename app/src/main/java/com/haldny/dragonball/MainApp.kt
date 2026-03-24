@@ -1,6 +1,5 @@
 package com.haldny.dragonball
 
-import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
@@ -16,7 +15,6 @@ import com.haldny.dragonball.core.navigation.AppDestination
 import com.haldny.dragonball.design.R
 import com.haldny.dragonball.design.components.DragonBallScaffold
 
-@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun MainApp() {
     val backStack = remember {
