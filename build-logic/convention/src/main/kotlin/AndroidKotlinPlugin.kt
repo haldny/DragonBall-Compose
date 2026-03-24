@@ -5,6 +5,7 @@ import extensions.libs
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
+import org.gradle.kotlin.dsl.dependencies
 
 class AndroidKotlinPlugin : Plugin<Project> {
     override fun apply(target: Project) {
@@ -16,6 +17,11 @@ class AndroidKotlinPlugin : Plugin<Project> {
                 defaultConfig.targetSdk = libs.findVersion("target-sdk").get().toString().toInt()
                 configureAndroidKotlin(this)
                 configureBuildTypes(this)
+            }
+            // defaultConfig sets AndroidJUnitRunner; the runner must be on the androidTest classpath.
+            dependencies {
+                add("androidTestImplementation", libs.findLibrary("androidx-junit").get())
+                add("androidTestImplementation", libs.findLibrary("espresso-core").get())
             }
         }
     }

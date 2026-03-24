@@ -25,6 +25,7 @@ class AndroidApplicationComposePlugin : Plugin<Project> {
                     versionName = libs.findVersion("version-name").get().toString()
                     applicationId = libs.findVersion("application-id").get().toString()
                     multiDexEnabled = true
+                    testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
                 }
 
                 compileOptions {
