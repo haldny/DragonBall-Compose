@@ -33,9 +33,11 @@ Sample Android app that lists **Dragon Ball** characters from a remote API, supp
 
 ## Architecture
 
-### Module map (dependency graph)
+Dependencies flow **inward**: UI and data depend on **domain** abstractions; **domain** stays free of Retrofit/Compose. Diagrams below use **Gradle `implementation`** edges (simplified: transitive AndroidX/Compose not shown).
 
-Dependencies flow **inward**: UI and data depend on **domain** abstractions; **domain** stays free of Retrofit/Compose. The diagram shows **Gradle `implementation`** edges (simplified: transitive AndroidX/Compose not shown).
+### Application module graph
+
+Runtime **app** and production modules only (`:testing` / `:architecture-test` are in the next diagram).
 
 ```mermaid
 flowchart TB
@@ -58,11 +60,6 @@ flowchart TB
     NET[core:network]
     BUS[core:business]
     DISP[core:dispatchers]
-  end
-
-  subgraph support["Test / checks"]
-    TESTING[testing]
-    ARCH[architecture-test]
   end
 
   APP --> DESIGN
@@ -94,27 +91,68 @@ flowchart TB
   DDOMAIN --> BUS
 
   NET --> BUS
-
-  TESTING --> BUS
-  TESTING --> CDOMAIN
-  TESTING --> DDOMAIN
-  TESTING --> CDATA
-  TESTING --> DDATA
-
-  ARCH -.-> DESIGN
-  ARCH -.-> NAV
-  ARCH -.-> NET
-  ARCH -.-> DISP
-  ARCH -.-> CV
-  ARCH -.-> CDV
-  ARCH -.-> CDATA
-  ARCH -.-> DDATA
-  ARCH -.-> CDOMAIN
-  ARCH -.-> DDOMAIN
-  ARCH -.-> BUS
 ```
 
-Dotted lines: **`architecture-test`** only depends on those modules for **Konsist** static checks (no `implementation` into `app`).
+### Test architecture (`:testing`, `:architecture-test`, `app` androidTest)
+
+- **`:testing`** — shared **fakes**, **fixtures**, and helpers; depends on both **domain** contracts and **data** (for module references used by fakes) plus **`core:business`**. Consumed by JVM tests, **`characters:view`** / **`character-detail:view`** Compose **androidTest** (`androidTestImplementation(projects.testing)`), and **`app`** instrumented tests (with Hilt `@BindValue`).
+- **`:architecture-test`** — **Konsist** static rules; **`testImplementation`** on nearly all production modules so rules can assert package and dependency boundaries. It does **not** ship inside **`app`**.
+- **`app` androidTest** — Hilt-driven navigation tests; adds **`testImplementation`** on `:testing`, feature **domain/data** (for `@UninstallModules`), and Hilt testing artifacts (see [`app/build.gradle.kts`](app/build.gradle.kts)).
+
+```mermaid
+flowchart TB
+  subgraph helpers["Shared test code"]
+    TMOD["testing<br/>fakes + fixtures"]
+  end
+
+  subgraph prod["Production modules (also on Konsist classpath)"]
+    BUS[core:business]
+    DESIGN[core:design]
+    NAV[core:navigation]
+    NET[core:network]
+    DISP[core:dispatchers]
+    CV[characters:view]
+    CDV[character-detail:view]
+    CDATA[characters:data]
+    CDOMAIN[characters:domain]
+    DDATA[character-detail:data]
+    DDOMAIN[character-detail:domain]
+  end
+
+  subgraph arch["architecture-test"]
+    K[Konsist rules]
+  end
+
+  subgraph app_test["app androidTest"]
+    HILT[Hilt + Compose<br/>navigation tests]
+  end
+
+  TMOD --> BUS
+  TMOD --> CDOMAIN
+  TMOD --> DDOMAIN
+  TMOD --> CDATA
+  TMOD --> DDATA
+
+  HILT --> TMOD
+  HILT --> CDOMAIN
+  HILT --> DDOMAIN
+  HILT --> CDATA
+  HILT --> DDATA
+
+  K -.->|testImplementation| BUS
+  K -.->|testImplementation| DESIGN
+  K -.->|testImplementation| NAV
+  K -.->|testImplementation| NET
+  K -.->|testImplementation| DISP
+  K -.->|testImplementation| CV
+  K -.->|testImplementation| CDV
+  K -.->|testImplementation| CDATA
+  K -.->|testImplementation| DDATA
+  K -.->|testImplementation| CDOMAIN
+  K -.->|testImplementation| DDOMAIN
+```
+
+**Dotted lines:** **`architecture-test`** only needs those modules on the **test compile classpath** for Konsist to inspect layers and imports—not runtime wiring into the APK.
 
 ### Architectural rules
 
