@@ -1,5 +1,7 @@
 package com.haldny.dragonball.design.components
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -12,6 +14,9 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import com.haldny.dragonball.design.theme.DragonBallComposeTheme
 
@@ -24,23 +29,44 @@ fun DragonBallScaffold(
     content: @Composable (PaddingValues) -> Unit,
 ) {
     val colorScheme = MaterialTheme.colorScheme
-    Scaffold(
-        modifier = modifier,
-        topBar = {
-            TopAppBar(
-                title = { Text(text = title, style = MaterialTheme.typography.titleLarge) },
-                navigationIcon = navigationIcon,
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = colorScheme.primary,
-                    scrolledContainerColor = colorScheme.primary,
-                    navigationIconContentColor = colorScheme.onPrimary,
-                    titleContentColor = colorScheme.onPrimary,
-                    actionIconContentColor = colorScheme.onPrimary,
-                ),
-            )
-        },
-        content = content
-    )
+    Box(modifier = modifier.fillMaxSize()) {
+        DragonBallAmbientBackground(modifier = Modifier.fillMaxSize())
+        Scaffold(
+            modifier = Modifier.fillMaxSize(),
+            containerColor = Color.Transparent,
+            topBar = {
+                TopAppBar(
+                    modifier = Modifier.background(
+                        Brush.horizontalGradient(
+                            colors = listOf(
+                                colorScheme.primary.copy(alpha = 0.55f),
+                                colorScheme.secondary.copy(alpha = 0.35f),
+                                colorScheme.tertiary.copy(alpha = 0.2f),
+                            ),
+                        ),
+                    ),
+                    title = {
+                        Text(
+                            text = title,
+                            style = MaterialTheme.typography.titleLarge.copy(
+                                fontWeight = FontWeight.Bold,
+                                letterSpacing = MaterialTheme.typography.titleLarge.letterSpacing * 1.2f,
+                            ),
+                        )
+                    },
+                    navigationIcon = navigationIcon,
+                    colors = TopAppBarDefaults.topAppBarColors(
+                        containerColor = Color.Transparent,
+                        scrolledContainerColor = colorScheme.surface.copy(alpha = 0.92f),
+                        navigationIconContentColor = Color.White,
+                        titleContentColor = Color.White,
+                        actionIconContentColor = Color.White,
+                    ),
+                )
+            },
+            content = content,
+        )
+    }
 }
 
 @Preview(showBackground = true)

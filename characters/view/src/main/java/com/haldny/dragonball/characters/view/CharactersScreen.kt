@@ -18,7 +18,6 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.haldny.dragonball.design.components.CharacterGridItem
@@ -44,7 +43,7 @@ fun CharactersScreen(
         }
     }
 
-    when (val ui = state) {
+    when (val uiState = state) {
         CharactersUiState.InitialLoading -> LoadingScreen(
             modifier = modifier.testTag(CharactersListTestTags.LOADING)
         )
@@ -56,7 +55,7 @@ fun CharactersScreen(
         ) { viewModel.onAction(CharactersUserAction.Refresh) }
         is CharactersUiState.Loaded -> ListCharactersScreen(
             modifier = modifier,
-            state = ui,
+            state = uiState,
             onItemClick = { viewModel.onAction(CharactersUserAction.OpenCharacter(it)) },
             onLoadMore = { viewModel.onAction(CharactersUserAction.LoadNextPage) },
         )
@@ -89,7 +88,7 @@ fun ListCharactersScreen(
                 if (triple == null) return@collect
                 val (lastVisibleIndex, totalItems, isAppending) = triple
                 if (isAppending || !content.hasNextPage) return@collect
-                if (lastVisibleIndex >= totalItems - 2) {
+                if (lastVisibleIndex >= totalItems - CharactersListLayout.LOAD_MORE_THRESHOLD_ITEMS_FROM_END) {
                     onLoadMore()
                 }
             }
@@ -100,7 +99,7 @@ fun ListCharactersScreen(
         modifier = modifier
             .fillMaxSize()
             .testTag(CharactersListTestTags.LIST),
-        columns = GridCells.Fixed(2),
+        columns = GridCells.Fixed(CharactersListLayout.GRID_COLUMN_COUNT),
         contentPadding = PaddingValues(Dimens.gridContentPadding),
     ) {
         items(
@@ -119,7 +118,7 @@ fun ListCharactersScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .testTag(CharactersListTestTags.APPEND_LOADING)
-                        .padding(16.dp),
+                        .padding(Dimens.listAppendLoadingPadding),
                     contentAlignment = Alignment.Center,
                 ) {
                     CircularProgressIndicator()

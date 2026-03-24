@@ -7,4 +7,15 @@
     <string name="characters_list_title">Personagens</string>
     <string name="character_detail_title">Detalhe</string>
     <string name="content_description_back">Voltar</string>
+    <string name="detail_tab_character">Personagem</string>
+    <string name="detail_tab_planet">Planeta</string>
+    <string name="detail_planet_unavailable">Sem informações do planeta de origem.</string>
+    <string name="detail_label_ki">Ki</string>
+    <string name="detail_label_max_ki">Ki máximo</string>
+    <string name="detail_label_gender">Gênero</string>
+    <string name="detail_label_race">Raça</string>
+    <string name="detail_label_description">Descrição</string>
+    <string name="detail_label_destroyed">Destruído</string>
+    <string name="detail_yes">Sim</string>
+    <string name="detail_no">Não</string>
 </resources>

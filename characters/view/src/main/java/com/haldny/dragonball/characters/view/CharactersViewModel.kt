@@ -3,6 +3,7 @@ package com.haldny.dragonball.characters.view
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.haldny.dragonball.characters.domain.CharactersPage
+import com.haldny.dragonball.characters.domain.CharactersPagingConfig.FIRST_PAGE
 import com.haldny.dragonball.characters.domain.CharactersPagingConfig.PAGE_LIMIT
 import com.haldny.dragonball.characters.domain.CharactersRepository
 import com.haldny.dragonball.core.business.BusinessResult
@@ -23,7 +24,9 @@ class CharactersViewModel @Inject constructor(
     private val _state = MutableStateFlow<CharactersUiState>(CharactersUiState.InitialLoading)
     val state = _state.asStateFlow()
 
-    private val _uiEffect = MutableSharedFlow<CharactersUiEffect>(extraBufferCapacity = 1)
+    private val _uiEffect = MutableSharedFlow<CharactersUiEffect>(
+        extraBufferCapacity = CharactersListLayout.UI_EFFECT_BUFFER_CAPACITY,
+    )
     val uiEffect = _uiEffect.asSharedFlow()
 
     init {
@@ -48,7 +51,7 @@ class CharactersViewModel @Inject constructor(
 
     private fun loadFirstPage() = viewModelScope.launch {
         _state.value = CharactersUiState.InitialLoading
-        runCatching { repository.getCharactersPage(page = 1, limit = PAGE_LIMIT) }.fold(
+        runCatching { repository.getCharactersPage(page = FIRST_PAGE, limit = PAGE_LIMIT) }.fold(
             onSuccess = { handleFirstPageResult(it) },
             onFailure = { _state.value = CharactersUiState.Error }
         )
@@ -67,7 +70,7 @@ class CharactersViewModel @Inject constructor(
                             characters = page.items.toImmutableList(),
                             hasNextPage = page.hasNextPage,
                             isAppending = false,
-                            nextPageToLoad = 2,
+                            nextPageToLoad = FIRST_PAGE + 1,
                         )
                     )
                 }

@@ -1,5 +1,6 @@
 package com.haldny.dragonball.character.detail.data.mapper
 
+import com.haldny.dragonball.core.business.RemoteIdDefaults
 import com.haldny.dragonball.character.detail.data.model.CharacterDetailResponse
 import com.haldny.dragonball.character.detail.data.model.OriginPlanet
 import com.haldny.dragonball.character.detail.data.model.Transformation
@@ -10,7 +11,7 @@ import com.haldny.dragonball.character.detail.domain.Gender
 import com.haldny.dragonball.character.detail.domain.Race
 
 fun CharacterDetailResponse.toBusinessModel() = DragonBallCharacterDetail(
-    id = id ?: 0,
+    id = id ?: RemoteIdDefaults.UNKNOWN_NUMERIC_ID,
     name = name.orEmpty(),
     ki = ki.orEmpty(),
     maxKi = maxKi.orEmpty(),
@@ -23,7 +24,7 @@ fun CharacterDetailResponse.toBusinessModel() = DragonBallCharacterDetail(
 )
 
 fun OriginPlanet.toBusinessModel() = DomainOriginPlanet(
-    id = id ?: 0,
+    id = id ?: RemoteIdDefaults.UNKNOWN_NUMERIC_ID,
     name = name.orEmpty(),
     description = description.orEmpty(),
     image = image.orEmpty(),
@@ -31,7 +32,7 @@ fun OriginPlanet.toBusinessModel() = DomainOriginPlanet(
 )
 
 fun Transformation.toBusinessModel() = DomainTransformation(
-    id = id ?: 0,
+    id = id ?: RemoteIdDefaults.UNKNOWN_NUMERIC_ID,
     name = name.orEmpty(),
     ki = ki.orEmpty(),
     image = image.orEmpty(),
