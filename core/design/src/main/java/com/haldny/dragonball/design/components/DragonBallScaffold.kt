@@ -23,6 +23,7 @@ fun DragonBallScaffold(
     navigationIcon: @Composable () -> Unit = {},
     content: @Composable (PaddingValues) -> Unit,
 ) {
+    val colorScheme = MaterialTheme.colorScheme
     Scaffold(
         modifier = modifier,
         topBar = {
@@ -30,9 +31,12 @@ fun DragonBallScaffold(
                 title = { Text(text = title, style = MaterialTheme.typography.titleLarge) },
                 navigationIcon = navigationIcon,
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.surface,
-                    titleContentColor = MaterialTheme.colorScheme.onSurface,
-                )
+                    containerColor = colorScheme.primary,
+                    scrolledContainerColor = colorScheme.primary,
+                    navigationIconContentColor = colorScheme.onPrimary,
+                    titleContentColor = colorScheme.onPrimary,
+                    actionIconContentColor = colorScheme.onPrimary,
+                ),
             )
         },
         content = content
