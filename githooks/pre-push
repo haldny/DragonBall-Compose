@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+# Runs quality checks only when pushing to the remote branch `main`.
+# Install once: ./scripts/install-git-hooks.sh
+# Bypass (emergency): SKIP_PUSH_CHECKS=1 git push
+set -euo pipefail
+
+if [[ "${SKIP_PUSH_CHECKS:-}" == "1" ]]; then
+  echo "[pre-push] SKIP_PUSH_CHECKS=1 — skipping."
+  exit 0
+fi
+
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+SCRIPT="${ROOT}/scripts/check-before-push.sh"
+
+if [[ ! -x "$SCRIPT" ]] && [[ -f "$SCRIPT" ]]; then
+  chmod +x "$SCRIPT"
+fi
+
+# stdin: <local_ref> <local_sha> <remote_ref> <remote_sha> per pushed ref
+while read -r local_ref local_sha remote_ref remote_sha; do
+  if [[ "$remote_ref" == "refs/heads/main" ]]; then
+    echo "[pre-push] Pushing to main — running ${SCRIPT}..."
+    exec "$SCRIPT"
+  fi
+done
+
+exit 0
