@@ -5,17 +5,19 @@ import com.haldny.dragonball.character.detail.data.mapper.toBusinessModel
 import com.haldny.dragonball.character.detail.domain.CharacterDetailRepository
 import com.haldny.dragonball.character.detail.domain.DragonBallCharacterDetail
 import com.haldny.dragonball.core.business.BusinessResult
+import com.haldny.dragonball.dispatchers.IoDispatcher
 import com.haldny.dragonball.network.extensions.handleResponse
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class CharacterDetailRepositoryImpl @Inject constructor(
-    private val characterDetailApi: CharacterDetailApi
+    private val characterDetailApi: CharacterDetailApi,
+    @param:IoDispatcher private val ioDispatcher: CoroutineDispatcher,
 ) : CharacterDetailRepository {
 
     override suspend fun getCharacterDetail(id: Int): BusinessResult<DragonBallCharacterDetail> =
-        withContext(Dispatchers.IO) {
+        withContext(ioDispatcher) {
             characterDetailApi.getCharacterDetail(id).handleResponse { response ->
                 response.toBusinessModel()
             }

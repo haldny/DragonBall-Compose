@@ -9,6 +9,7 @@ android {
 }
 
 dependencies {
+    implementation(project(":core:dispatchers"))
     implementation(project(":core:business"))
     implementation(project(":core:network"))
     implementation(project(":character-detail:domain"))

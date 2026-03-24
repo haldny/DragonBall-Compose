@@ -9,14 +9,18 @@ import io.mockk.every
 import io.mockk.mockk
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertTrue
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
 import retrofit2.Response
 
+@OptIn(ExperimentalCoroutinesApi::class)
 class CharacterDetailRepositoryImplTest {
 
     private val api: CharacterDetailApi = mockk()
-    private val characterDetailRepository = CharacterDetailRepositoryImpl(api)
+    private val ioDispatcher = UnconfinedTestDispatcher()
+    private val characterDetailRepository = CharacterDetailRepositoryImpl(api, ioDispatcher)
 
     @Test
     fun `given a success response with an character, when get character detail is called, then a business result success value is returned`() = runTest {

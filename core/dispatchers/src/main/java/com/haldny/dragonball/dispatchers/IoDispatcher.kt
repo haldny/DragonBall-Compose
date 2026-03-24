@@ -1,0 +1,9 @@
+package com.haldny.dragonball.dispatchers
+
+import javax.inject.Qualifier
+import kotlin.annotation.AnnotationRetention
+import kotlin.annotation.Retention
+
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
+annotation class IoDispatcher
